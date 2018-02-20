@@ -1,7 +1,11 @@
 'use strict';
+Chart.defaults.global.defaultFontSize = 28;
 var products = [];
+var imgClickData = [];
+var imgShownData = [];//Save for tomorrow
 var gameClicks=0;
 var gameBox = document.getElementById('game');
+var productNames = ['bag','banana','bathroom','boots','breakfast','bubblegum','chair','cthulhu','dog-duck','dragon','pen','pet-sweep','scissors','shark','sweep','tauntaun','unicorn','usb','water-can','wine-glass'];
 function Product(name,filePath){
     this.name=name;
     this.filePath=filePath;
@@ -66,18 +70,61 @@ function createRandomImages(){
 function eventHandler(event){
     event.preventDefault(); //prevent reset on refresh
     for (var i=0; i<products.length; i++){ //for all interations of the images
-        if (event.target.id === products[i].name){ //if selected id matches name, increment click total for that name
-            products[i].imgClickTotal++;
+        if (event.target.id === products[i].name){ //if selected id matches name
+            products[i].imgClickTotal++; //increment click total for that name
+            imgClickData[i] = products[i].imgClickTotal; //Assign values to data array
         } 
     }
     gameClicks++; //increment clicksTotal when clicked
     game.innerHTML =''; // Clear images for new random images
-    if(gameClicks===25){ // remove the event handler if the game is over
-       gameBox.removeEventListener('click',eventHandler);
-       //Maybe do something else too
+    if(gameClicks===2){ // remove the event handler if the game is over
+        document.getElementById("game").style.visibility = "hidden";
+        gameBox.removeEventListener('click',eventHandler);
+        renderClicksChart(); //set Click Data Chart
     }
     createRandomImages(); //call the images to the screen
 }
+function renderClicksChart(){
+    var ctx = document.getElementById("chart");
+    var clicksChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: productNames,
+            datasets: [{
+                label: 'Number of Clicks',
+                data: imgClickData,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            }
+        }
+    });
+}
+
+
 //Operations
 gameBox.addEventListener('click', eventHandler); //set event
 createRandomImages(); //set initial images
