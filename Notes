@@ -1,0 +1,38 @@
+//Need to add logic for no duplicants
+//Need to add logic for not show up in next random set
+//Need to add click targets
+
+function eventHandler(event){
+    event.preventDefault(); //prevent reset on refresh
+    gameClicksTotal++; //increment clicksTotal when clicked
+    game.innerHTML =''; // Clear images for new random images
+    //remove the event handler if the game is over
+    if(gameClicksTotal===25){
+        removeEventListener('click',eventHandler);
+        //maybe do something else too
+    }
+    //After clear make 3 images show up
+    function createRandomImage(){
+    var displayArray = []; //clear displaying images array
+    for (var i=0; i<3; i++){
+        var temp = Math.floor(Math.random()*products.length); // create random number index
+        displayArray.push(products[temp]); //push random product[i] into displayArray
+        products[temp].imgShownTotal++ //increment image display counter
+        var imgEl = document.createElement('img'); //create image element for section
+        imgEl.src = (products[temp].filePath); //create img src from object
+        gameBox.appendChild(imgEl); //append img to parent container
+        
+        if( )
+    }
+}
+if(event.target)
+
+
+
+//record click on target
+//record click total
+//clear all images
+//reload random images
+//show only one of each
+//reload only if not called in previous reload
+}
