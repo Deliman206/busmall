@@ -7,12 +7,10 @@ function Product(name,filePath){
     this.filePath=filePath;
     this.imgClickTotal=0;
     this.imgShownTotal=0;
-    products.push(this);
     this.previous = false;
+    products.push(this);
 }
-Product.prototype.chosen = function(){
-        this.imgClickTotal++;
-}
+
 //Images we will be showing
 new Product('bag','img/bag.jpg','bag');
 new Product('banana','img/banana.jpg','banana');
@@ -64,29 +62,22 @@ function createRandomImages(){
         }
     }
 }
-
+//Event Handler for click on picture
 function eventHandler(event){
     event.preventDefault(); //prevent reset on refresh
-    console.log(event.target.id);
-    //Not refined enough to register a value, the idea is there.
-    // console.log(event.target);
-    for (var i=0; i<products.length; i++){
-        // console.log(products[i].filePath);
-        if (event.target.id === products[i].name){
+    for (var i=0; i<products.length; i++){ //for all interations of the images
+        if (event.target.id === products[i].name){ //if selected id matches name, increment click total for that name
             products[i].imgClickTotal++;
         } 
     }
-    //(product contains event then add to click total)
     gameClicks++; //increment clicksTotal when clicked
     game.innerHTML =''; // Clear images for new random images
-    // remove the event handler if the game is over
-    if(gameClicks===25){
+    if(gameClicks===25){ // remove the event handler if the game is over
        gameBox.removeEventListener('click',eventHandler);
        //Maybe do something else too
     }
-    createRandomImages();
+    createRandomImages(); //call the images to the screen
 }
-
 //Operations
 gameBox.addEventListener('click', eventHandler); //set event
 createRandomImages(); //set initial images
