@@ -1,5 +1,6 @@
 'use strict';
-Chart.defaults.global.defaultFontSize = 28;
+Chart.defaults.global.defaultFontSize = 22;
+document.getElementById("chart").hidden=true;
 var products = [];
 var imgClickData = [];
 var imgShownData = [];//Save for tomorrow
@@ -40,7 +41,7 @@ new Product('wine-glass','img/wine-glass.jpg','wine-glass');
 //After clear make 3 images show up
 function createRandomImages(){
     var displayArray = []; //clear displaying images array
-    game.innerHTML =''; // Clear images for new random images
+    // game.innerHTML =''; // Clear images for new random images
     for (var i=0; i<3; i++){
         var temp = Math.floor(Math.random()*products.length); // create random number index
         //if product is in displayArray or it has a previous value of true, try again
@@ -65,24 +66,32 @@ function createRandomImages(){
             products[j].previous = false;
         }
     }
+
 }
 //Event Handler for click on picture
 function eventHandler(event){
     event.preventDefault(); //prevent reset on refresh
-    for (var i=0; i<products.length; i++){ //for all interations of the images
-        if (event.target.id === products[i].name){ //if selected id matches name
-            products[i].imgClickTotal++; //increment click total for that name
-            imgClickData[i] = products[i].imgClickTotal; //Assign values to data array
-        } 
+    if(event.target.id==="game"){
+        alert("Please Click an Image!");
     }
-    gameClicks++; //increment clicksTotal when clicked
-    game.innerHTML =''; // Clear images for new random images
-    if(gameClicks===2){ // remove the event handler if the game is over
-        document.getElementById("game").style.visibility = "hidden";
-        gameBox.removeEventListener('click',eventHandler);
-        renderClicksChart(); //set Click Data Chart
+    else{
+        for (var i=0; i<products.length; i++){ //for all interations of the images
+            if (event.target.id === products[i].name){ //if selected id matches name
+                products[i].imgClickTotal++; //increment click total for that name
+                imgClickData[i] = products[i].imgClickTotal; //Assign values to data array
+            } 
+        }
+        gameClicks++; //increment clicksTotal when clicked
+        game.innerHTML =''; // Clear images for new random images
+        if(gameClicks===2){ // remove the event handler if the game is over
+            document.getElementById("chart").hidden=false;
+            document.getElementById("game").hidden=true;
+            gameBox.removeEventListener('click',eventHandler);
+            storeData();
+            renderClicksChart(); //set Click Data Chart
+        }
+        createRandomImages(); //call the images to the screen
     }
-    createRandomImages(); //call the images to the screen
 }
 function renderClicksChart(){
     var ctx = document.getElementById("chart");
@@ -113,6 +122,7 @@ function renderClicksChart(){
             }]
         },
         options: {
+            responsive:false,
             scales: {
                 yAxes: [{
                     ticks: {
@@ -123,8 +133,17 @@ function renderClicksChart(){
         }
     });
 }
-
+function storeData(){
+    localStorage.imgClickData = JSON.stringify(imgClickData)
+}
+function retrieveData(){
+    if(localStorage.imgClickData){
+        localStorage.imgClickData;
+        imgClickData = JSON.parse(localStorage.imgClickData)
+    }
+    createRandomImages();
+}
 
 //Operations
 gameBox.addEventListener('click', eventHandler); //set event
-createRandomImages(); //set initial images
+retrieveData(); //Local 
