@@ -6,6 +6,7 @@ var imgClickData = [];
 var imgShownData = [];//Save for tomorrow
 var gameClicks=0;
 var gameBox = document.getElementById('game');
+var list = document.getElementById('list');
 var productNames = ['bag','banana','bathroom','boots','breakfast','bubblegum','chair','cthulhu','dog-duck','dragon','pen','pet-sweep','scissors','shark','sweep','tauntaun','unicorn','usb','water-can','wine-glass'];
 function Product(name,filePath){
     this.name=name;
@@ -83,14 +84,23 @@ function eventHandler(event){
         }
         gameClicks++; //increment clicksTotal when clicked
         game.innerHTML =''; // Clear images for new random images
-        if(gameClicks===2){ // remove the event handler if the game is over
+        if(gameClicks===25){ // remove the event handler if the game is over
             document.getElementById("chart").hidden=false;
             document.getElementById("game").hidden=true;
             gameBox.removeEventListener('click',eventHandler);
             storeData();
+            renderList();
             renderClicksChart(); //set Click Data Chart
+
         }
         createRandomImages(); //call the images to the screen
+    }
+}
+function renderList(){
+    for (var i=0; i<productNames.length; i++){
+        var pEl = document.createElement('p');
+        pEl.textContent= products[i].name + 'was clicked '+products[i].imgClickTotal+'.';
+        list.appendChild(pEl);
     }
 }
 function renderClicksChart(){

@@ -38,7 +38,7 @@ main img{
     height:275px;
     margin: 5% 3% 2% 5%;
 }
-main p{
+#desc{
     border-style: groove;
     border-color: black;
     background-color: aquamarine;
@@ -59,4 +59,17 @@ canvas{
 footer{
     background-color: aquamarine;
     height: 50px;
+}
+#list{
+    margin: 5% 2% 2% 2%;
+    padding: 2% 2% 2% 2%;
+    border:dotted;
+    background-color: goldenrod;
+}
+#list p{
+    border:solid;
+    display: inline-block;
+    margin-right: 1%;
+    padding:5px;
+
 }
