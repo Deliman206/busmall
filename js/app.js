@@ -118,7 +118,7 @@ function eventHandler(event){
         }
         gameClicks++; //increment clicksTotal when clicked
         game.innerHTML =''; // Clear images for new random images
-        if(gameClicks===5){ // remove the event handler if the game is over
+        if(gameClicks===25){ // remove the event handler if the game is over
             document.getElementById("chart").hidden=false;
             document.getElementById("game").hidden=true;
             gameBox.removeEventListener('click',eventHandler);
