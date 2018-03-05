@@ -1,4 +1,15 @@
 'use strict';
+var busRoad=document.getElementById('bus').getContext('2d');
+var bus = new Image();
+// bus.width = 200;
+// bus.height = 116;
+bus.src = 'img/bus.png';
+var busState ={
+    x: -500,
+    y: -10
+  };
+var tableTitle = ['Item','Views','Clicks','%Clicked when Shown','Recommended'];
+var table = document.getElementById('table'); 
 Chart.defaults.global.defaultFontSize = 22;
 document.getElementById("chart").hidden=true;
 var products = [];
@@ -16,6 +27,29 @@ function Product(name,filePath){
     this.previous = false;
     products.push(this);
 }
+Product.prototype.pertcentClick = function(){
+    var percent =  this.imgClickTotal/this.imgShownTotal *100;
+    console.log(this.imgClickTotal/this.imgShownTotal *100);
+    return Math.floor(this.percent);
+}
+// Product.prototype.renderRow= function(){
+//     var trEl = document.createElement('tr');
+//     trEl.textContent = this.name;
+//     var tdEl = document.createElement('td');
+//     tdEl.textContent = this.imgShownTotal;
+//     trEl.appendChild(tdEl);
+//     var tdEl = document.createElement('td');
+//     tdEl.textContent = this.imgClickTotal;
+//     trEl.appendChild(tdEl);
+//     var tdEl = document.createElement('td');
+//     tdEl.textContent = this.pertcentClick();
+//     if(tdEl.textContent >70){
+//         tdEl.textContent.fontcolor(0,0,0);
+//     }
+//     trEl.appendChild(tdEl);
+//     table.appendChild(trEl);
+    
+// }
 
 //Images we will be showing
 new Product('bag','img/bag.jpg','bag');
@@ -91,11 +125,22 @@ function eventHandler(event){
             storeData();
             renderList();
             renderClicksChart(); //set Click Data Chart
+            // renderTable();
 
         }
         createRandomImages(); //call the images to the screen
     }
 }
+(function busRun(){
+    setInterval(function(){
+        busRoad.clearRect(0,0,900,500);
+        busRoad.drawImage(bus, busState.x, busState.y);
+        busState.x+=1;
+        if (busState.x>1000){
+            busState.x=0;
+        }
+},1)
+})();
 function renderList(){
     for (var i=0; i<productNames.length; i++){
         var pEl = document.createElement('p');
@@ -153,7 +198,18 @@ function retrieveData(){
     }
     createRandomImages();
 }
+// function renderTable(){
+//     for(var i=0; i<tableTitle.length; i++){
+//         var thEl=document.createElement('th');
+//         thEl.textContent= tableTitle[i];
+//         table.appendChild(thEl);
+//     }
+//     for(var i=0; i<products.length; i++){
+//         products[i].renderRow();
+//     }
+    
 
+// }
 //Operations
 gameBox.addEventListener('click', eventHandler); //set event
 retrieveData(); //Local 
